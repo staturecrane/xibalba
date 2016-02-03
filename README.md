@@ -16,27 +16,21 @@ import {Xibalba} from './xibalba.js';
 
 const xi = new Xibalba; 
 
-renderDiv();
-
-function renderDiv(){
-  //we simply use xi.create to return a Javascript object that is stored in div
-  //xi.creat takes three arguments: the node element, optional text content, 
-  //and an optional attributes object
-  let div = 
-    xi.create('div', void 0, {
-      id: 'unique-id',
-      onclick: someFunc,
-      style: {
-        width: window.innerWidth/2 + 'px'
-      }
-    });
-  //a component is simply an array Xibalba objects 
-  let component = [div];
+//we simply use xi.create to return a DOM-like object that is stored in div//xi.creat takes three arguments: the node element, optional text content, 
+//and an optional attributes object
+let div = 
+  xi.create('div', void 0, {
+    id: 'unique-id',
+    onclick: someFunc,
+    style: {
+      width: window.innerWidth/2 + 'px'
+    }
+  });
+//a component is simply an array Xibalba objects 
+let component = [div];
   
-  //container elements are completely emptied and reinitialized
-  xi.setHTML(component, document.body);
-  
-}
+//container elements are completely emptied and reinitialized
+xi.setHTML(component, document.body);
 
 ```
 
@@ -60,8 +54,8 @@ let component = [
   xi.create('h1', xi.subscribe('newText'), {
     class: xi.subscribe('red'),
     onclick: ()=>{
-      store.setStore('red', 'blue')
-      store.setStore('newText', 'This text is now blue')
+      store.setStore('red', 'blue');
+      store.setStore('newText', 'This text is now blue');
     }
   })
 ];
