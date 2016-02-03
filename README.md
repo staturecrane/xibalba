@@ -1,4 +1,4 @@
-#XIBALBA
+#Xibalba
 
 A tiny, ES2015-flavored templating library that allows for the quick and concentrated creation of small websites entirely through Javascript. I built it primarily as a learning exercise and challenge, but have found myself using it for all of my personal web projects and continue to add, remove and improve its features. At current, it's just over 80% tested.
 
