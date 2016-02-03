@@ -65,4 +65,6 @@ xi.setHTML(component, document.body);
 ```
 Now, when the h1 element is clicked, its subscribed attributes will automatically update, too. 
 
+#Easy Adaptive Styling
 
+Xibalba allows for the quick coding of adaptive websites. 
