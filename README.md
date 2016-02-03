@@ -42,7 +42,7 @@ function renderDiv(){
 
 #An integrated reactive store
 
-Unlike React, wherein each component has a state which can be explicitly passed as props to other components, but remain local, each Xibalba instance can be initialized with a single store that components can subscribe to. By default, subscriptions can be used to register custom callbacks and to link component attributes to specific text content. 
+Unlike React, wherein each component has a state which can be explicitly passed as props to other components, each Xibalba instance can be initialized with a single store that all components subscribe to. By default, subscriptions can be used to register custom callbacks and to link component attributes to specific text content. 
 
 Store utilizes es2015 maps to store and retrieve information, as well as register callbacks to update subscribed components. 
 
