@@ -89,7 +89,7 @@ function replaceTextWithStore(text, func, update = void 0, subscribeArr = []){
         }
         let store = regMatch.exec(text)[1];
         if (!func.getStore(store)){
-            throw 'store not found: ' + store;
+            console.log('store not found: ' + store);
         }
         subscribe.push(store);
         let newText = text.replace(regMatch, func.getStore(store));
@@ -197,7 +197,7 @@ function createHyperText(obj, storeFunc){
                         }
                         else {
                             let newMap = new Map();
-                            let newObj = {};
+                            let newObj = {style:{}};
                             newObj[attribute] = oldText;
                             newMap.set(id, newObj);
                             callbacks.set(subscription[y], newMap);
@@ -205,7 +205,7 @@ function createHyperText(obj, storeFunc){
                     }
                     else{
                         let newCallbacksMap = new Map();
-                        let newAttObj = {};
+                        let newAttObj = {style:{}};
                         newAttObj[attribute] = oldText;
                         newCallbacksMap.set(id, newAttObj);
                         callbacks.set(subscription[y], newCallbacksMap);
@@ -215,7 +215,40 @@ function createHyperText(obj, storeFunc){
             }
             else if (attribute === 'style'){
                 for (let a in obj.options[x]){
-                    node.style[a] = obj.options[x][a];
+                    if (regMatch.test(obj.options[x][a])){
+                        let oldText = obj.options[x][a];
+                        let attObject = replaceTextWithStore(obj.options[x][a], storeFunc);
+                        let subscription = attObject.subscribe;
+                        for (let y = 0; y < subscription.length; y++){
+                            if (callbacks.has(subscription[y])){
+                                let storeMap = callbacks.get(subscription[y]);
+                                if (storeMap.has(id)){
+                                    let newObj = storeMap.get(id);
+                                    newObj.style[a] = oldText;
+                                    storeMap.set(id, newObj);
+                                    callbacks.set(subscription[y], storeMap);
+                                }
+                                else {
+                                    let newMap = new Map();
+                                    let newObj = {style: {}};
+                                    newObj.style[a] = oldText;
+                                    newMap.set(id, newObj);
+                                    callbacks.set(subscription[y], newMap);
+                                }
+                            }
+                            else{
+                                let newCallbacksMap = new Map();
+                                let newAttObj = {style:{}};
+                                newAttObj.style[a] = oldText;
+                                newCallbacksMap.set(id, newAttObj);
+                                callbacks.set(subscription[y], newCallbacksMap);
+                            }
+                        }
+                        node.style[a] = attObject.text;
+                    }
+                    else {
+                        node.style[a] = obj.options[x][a];
+                    }
                 }
             }
             else {
@@ -251,13 +284,20 @@ class Store {
                 }
                 else{
                     for (let x in obj){
-                        let newText = replaceTextWithStore(obj[x], that, true);
                         let node = document.getElementById(id);
                         if (!!node){
                             if (x === 'textContent'){
+                                let newText = replaceTextWithStore(obj[x], that, true);
                                 node.textContent = newText;
                             }
+                            else if (x === 'style'){
+                                for (let a in obj[x]){
+                                    let newText = replaceTextWithStore(obj[x][a], that, true);
+                                    node.style[a] = newText;
+                                }
+                            }
                             else{
+                                let newText = replaceTextWithStore(obj[x], that, true);
                                 node[x] = newText;
                             }    
                         }
@@ -340,4 +380,4 @@ class Xibalba {
     }
 }
 
-export {Store, Xibalba};
+export {Xibalba, Store};
